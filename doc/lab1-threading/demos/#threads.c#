@@ -17,7 +17,7 @@
  * 2 - Consider how this could be applied to the Poisson solver.
  */
 
-#define NUM_THREADS     8
+#define NUM_THREADS     4
 
 
 typedef struct
@@ -41,7 +41,7 @@ void* worker (void* pargs)
         }
         printf ("%i\n", i);
         // Delay a random amount up to 1 second
-        usleep (100);
+        usleep (rand () % 1000000);
     }
 
     return NULL;
@@ -50,7 +50,7 @@ void* worker (void* pargs)
 
 int main (int argc, char** argv)
 {
-    int range = 100;
+    int range = 20;
 
     // Storage for the thread handles and arguments
     // will exist for the entire lifetime of the program.
