@@ -8,3 +8,6 @@ threads
 cachegrind.out.*
 
 _minted-*/
+/.vs
+/build
+/int
