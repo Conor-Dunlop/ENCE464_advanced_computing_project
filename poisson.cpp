@@ -75,10 +75,6 @@ double* poisson_mixed(const int n, const double* source, const int iterations, c
             }
         }
 
-        if (debug) {
-            std::cout << "Iteration: " << iter << '\n';
-        }
-
         // swap current and next
         double* curr_temp = curr;
         curr = next;

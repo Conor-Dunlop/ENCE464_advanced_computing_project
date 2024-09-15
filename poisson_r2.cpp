@@ -93,10 +93,6 @@ double* poisson_mixed_r2(const int n, const double* source, const int iterations
             }
         }
 
-        if (debug) {
-            std::cout << "Iteration: " << iter << '\n';
-        }
-
         // swap current and next
         double* curr_temp = curr;
         curr = next;

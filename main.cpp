@@ -69,7 +69,7 @@ int main(int argc, char** argv)
     int threads = 1;
     double delta = 1.0;
 
-#ifdef _DEBUG || DEBUG
+#ifdef _DEBUG
     debug = true;
 #endif // DEBUG
 
@@ -147,8 +147,11 @@ int main(int argc, char** argv)
 
     std::chrono::time_point time_end_r1 = std::chrono::high_resolution_clock::now();
 
-    std::chrono::duration<double> time_diff_r1 = time_end_r1 - time_start_r1;
-    std::cout << "Time taken for R1: " << time_diff_r1 << '\n';
+    if (debug) {
+        std::chrono::duration<double> time_diff_r1 = time_end_r1 - time_start_r1;
+        std::cout << "Time taken for R1: " << time_diff_r1.count() << '\n';
+    }
+
     if (n <= PRINT_THRESHOLD) {
         std::cout << "Result:" << '\n';
         print_slice(n, result_r1);
@@ -164,8 +167,11 @@ int main(int argc, char** argv)
 
     std::chrono::time_point time_end_r2 = std::chrono::high_resolution_clock::now();
 
-    std::chrono::duration<double> time_diff_r2 = time_end_r2 - time_start_r2;
-    std::cout << "Time taken for R2: " << time_diff_r2 << "\n";
+    if (debug) {
+        std::chrono::duration<double> time_diff_r2 = time_end_r2 - time_start_r2;
+        std::cout << "Time taken for R2: " << time_diff_r2.count() << "\n";
+    }
+
     if (n <= PRINT_THRESHOLD) {
         std::cout << "Result:" << '\n';
         print_slice(n, result_r2, 2);

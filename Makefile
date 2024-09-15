@@ -5,7 +5,7 @@ all: poisson
 # -pthread configures threading
 CFLAGS = -g -Wall -pthread
 
-poisson: poisson.c
+poisson: main.cpp poisson.cpp poisson_r2.cpp
 
 .PHONY: disassembly
 disassembly: poisson.s
