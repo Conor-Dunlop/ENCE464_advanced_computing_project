@@ -1,6 +1,6 @@
 #include "poisson_r2.h"
 
-void build_boundary(double* buf, int32_t n) {
+static void build_boundary(double* buf, int32_t n) {
     const int32_t ln_s = (n + 2);
     const int32_t pl_s = (n + 2) * (n + 2);
     const int32_t top_plane_idx = pl_s * (n+1);
@@ -17,7 +17,7 @@ void build_boundary(double* buf, int32_t n) {
     }
 }
 
-void test_build_boundary(void) {
+static void test_build_boundary(void) {
     uint32_t n = 5;
 
     size_t buf_size = (n + 2) * (n + 2) * (n + 2);
@@ -79,15 +79,16 @@ double* poisson_mixed_r2(const int n, double* const source, const int iterations
         {
             for (int j = 1; j < n+1; j++)
             {
-                double* row_b = curr + ((k * sz + j) * sz - 1);
-                double* row_f = curr + ((k * sz + j) * sz + 1);
-                double* row_up = curr + (((k+1) * sz + j) * sz);
-                double* row_low = curr + (((k-1) * sz + j) * sz);
-                double* row_l = curr + ((k * sz + (j+1)) * sz);
-                double* row_r = curr + ((k * sz + (j-1)) * sz);
-                double* src_row = source + (((k - 1) * n + (j - 1)) * n - 1);
+                double* row_b = curr + ((k * sz + j) * sz - 0);
+                double* row_f = curr + ((k * sz + j) * sz + 2);
+                double* row_up = curr + (((k+1) * sz + j) * sz + 1);
+                double* row_low = curr + (((k-1) * sz + j) * sz + 1);
+                double* row_l = curr + ((k * sz + (j+1)) * sz + 1);
+                double* row_r = curr + ((k * sz + (j-1)) * sz + 1);
+                double* src_row = source + (((k - 1) * n + (j - 1)) * n - 0);
+                double* dest_row = next + ((k * sz + j) * sz + 1);
 
-                for (int i = 1; i < n+1; i++)
+                for (int i = 0; i < n; i++)
                 {
 
                     double res = (
@@ -98,8 +99,8 @@ double* poisson_mixed_r2(const int n, double* const source, const int iterations
                         row_l[i] +
                         row_r[i]);
 
-                    double src_val = (delta_sq * src_row[i]);
-                    next[(k * sz + j) * sz + i] = one_sixth * (res - src_val);
+                    double src_val = one_sixth * (res - (delta_sq * src_row[i]));
+                    dest_row[i] = src_val;
                 }
             }
         }
