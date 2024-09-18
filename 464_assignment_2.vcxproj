@@ -134,7 +134,8 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)eigen;$(ProjectDir)imgui;$(ProjectDir)imgui\backends;$(ProjectDir)implot;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalModuleDependencies>datamap</AdditionalModuleDependencies>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NoExtensions</EnableEnhancedInstructionSet>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,19 +146,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="implementations\poisson.cpp" />
+    <ClCompile Include="implementations\poisson_multithread.cpp" />
+    <ClCompile Include="implementations\poisson_r2.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="poisson.cpp" />
-    <ClCompile Include="poisson_multithread.cpp" />
-    <ClCompile Include="poisson_r2.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="poisson.h" />
-    <ClInclude Include="poisson_multithread.h" />
-    <ClInclude Include="poisson_r2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="implementations\poisson.h" />
+    <ClInclude Include="implementations\poisson_multithread.h" />
+    <ClInclude Include="implementations\poisson_r2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

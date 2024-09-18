@@ -6,9 +6,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "poisson.h"
-#include "poisson_r2.h"
-#include "poisson_multithread.h"
+#include "implementations/poisson_r2.h"
 
 #define PRINT_THRESHOLD 15
 
@@ -44,7 +42,7 @@
 
  // Global flag
  // Set to true when operating in debug mode to enable verbose logging
-bool debug = false;
+bool debug = true;
 
 void print_slice(int n, double* data, int ex_size = 0) {
 
@@ -65,7 +63,7 @@ int main(int argc, char** argv)
 {
     // Default settings for solver
     int iterations = 300;
-    int n = 101;
+    int n = 301;
     int threads = 1;
     double delta = 1.0;
 
@@ -138,27 +136,6 @@ int main(int argc, char** argv)
 
     source[(n * n * n) / 2] = 1;
 
-    ///////////////////////////////////////////////////////////////////////////////
-
-    std::chrono::time_point time_start_r1 = std::chrono::high_resolution_clock::now();
-
-    // Calculate the resulting field with Dirichlet conditions
-    double* result_r1 = poisson_mixed(n, source, iterations, delta);
-
-    std::chrono::time_point time_end_r1 = std::chrono::high_resolution_clock::now();
-
-    if (debug) {
-        std::chrono::duration<double> time_diff_r1 = time_end_r1 - time_start_r1;
-        std::cout << "Time taken for R1: " << time_diff_r1.count() << '\n';
-    }
-
-    if (n <= PRINT_THRESHOLD) {
-        std::cout << "Result:" << '\n';
-        print_slice(n, result_r1);
-    }
-    std::cout << '\n';
-
-    ///////////////////////////////////////////////////////////////////////////////
 
     std::chrono::time_point time_start_r2 = std::chrono::high_resolution_clock::now();
 
@@ -173,14 +150,10 @@ int main(int argc, char** argv)
     }
 
     if (n <= PRINT_THRESHOLD) {
-        std::cout << "Result:" << '\n';
         print_slice(n, result_r2, 2);
     }
-    std::cout << '\n';
-
 
     free(source);
-    free(result_r1);
     free(result_r2);
 
     return EXIT_SUCCESS;
