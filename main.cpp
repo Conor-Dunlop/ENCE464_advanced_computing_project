@@ -5,8 +5,11 @@
 #include <string.h>
 #include <chrono>
 #include <iostream>
+#include <thread>
 
+#include "implementations/poisson_multithread.h"
 #include "implementations/poisson_r2.h"
+#include "implementations/poisson.h"
 
 #define PRINT_THRESHOLD 15
 
@@ -63,8 +66,9 @@ int main(int argc, char** argv)
 {
     // Default settings for solver
     int iterations = 300;
-    int n = 301;
-    int threads = 1;
+    int n = 901;
+    // int threads = 1;
+    int threads = 8;
     double delta = 1.0;
 
 #ifdef _DEBUG
@@ -140,13 +144,13 @@ int main(int argc, char** argv)
     std::chrono::time_point time_start_r2 = std::chrono::high_resolution_clock::now();
 
     // Calculate the resulting field with Dirichlet conditions
-    double* result_r2 = poisson_mixed_r2(n, source, iterations, delta);
+    double* result_r2 = poisson_mixed_multithread(n, source, iterations, threads, delta);
 
     std::chrono::time_point time_end_r2 = std::chrono::high_resolution_clock::now();
 
     if (debug) {
         std::chrono::duration<double> time_diff_r2 = time_end_r2 - time_start_r2;
-        std::cout << "Time taken for R2: " << time_diff_r2.count() << "\n";
+        std::cout << "Time taken: " << time_diff_r2.count() << "\n";
     }
 
     if (n <= PRINT_THRESHOLD) {

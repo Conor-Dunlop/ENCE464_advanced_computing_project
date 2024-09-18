@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <iostream>
+#include <thread>
+#include "thread_pool/thread_pool.h"
 
 extern bool debug;
 
@@ -18,4 +21,4 @@ extern bool debug;
  * @param delta         Grid spacing.
  * @return double*      Solution to Poissons equation.  Caller must free.
  */
-double* poisson_mixed_multithread(const int n, const double* const source, const int iterations, const int threads, const float delta);
+double* poisson_mixed_multithread(const int n, double* const source, const int iterations, const int threads, const double delta);
