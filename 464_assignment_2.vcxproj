@@ -150,6 +150,7 @@
     <ClCompile Include="implementations\poisson.cpp" />
     <ClCompile Include="implementations\poisson_multithread.cpp" />
     <ClCompile Include="implementations\poisson_r2.cpp" />
+    <ClCompile Include="include\getopt.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

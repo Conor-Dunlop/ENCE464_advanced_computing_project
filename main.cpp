@@ -3,9 +3,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef _WIN32
+    #include "getopt.h"
+#else
+    #include <unistd.h>
+#endif // WINDOWS
+
+
 #include <chrono>
 #include <iostream>
-#include <thread>
 
 #include "implementations/poisson_multithread.h"
 #include "implementations/poisson_r2.h"
@@ -61,65 +68,59 @@ void print_slice(int n, double* data, int ex_size = 0) {
         printf("\n");
     }
 }
-
-int main(int argc, char** argv)
-{
-    // Default settings for solver
-    int iterations = 300;
-    int n = 901;
-    // int threads = 1;
-    int threads = 8;
-    double delta = 1.0;
-
 #ifdef _DEBUG
     debug = true;
 #endif // DEBUG
 
+int main(int argc, char** argv)
+{
+    // Default settings for solver
+    int iterations = 10;
+    int n = 5;
+    int threads = 1;
+    float delta = 1;
+    int x = -1;
+    int y = -1;
+    int z = -1;
+    double amplitude = 1.0;
+
+    int opt;
+
     // parse the command line arguments
-    for (int i = 1; i < argc; ++i)
+    while ((opt = getopt(argc, argv, "h:n:i:x:y:z:a:t:d:")) != -1)
     {
-        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0)
+        switch (opt)
         {
-            printf("Usage: poisson [-n size] [-i iterations] [-t threads] [--debug]\n");
+        case 'h':
+            printf("Usage: poisson [-n size] [-x source x-poisition] [-y source y-position] [-z source z-position] [-a source amplitude] [-i iterations] [-t threads] [-d] (for debug mode)\n");
             return EXIT_SUCCESS;
-        }
-
-        if (strcmp(argv[i], "-n") == 0)
-        {
-            if (i == argc - 1)
-            {
-                fprintf(stderr, "Error: expected size after -n!\n");
-                return EXIT_FAILURE;
-            }
-
-            n = atoi(argv[++i]);
-        }
-
-        if (strcmp(argv[i], "-i") == 0)
-        {
-            if (i == argc - 1)
-            {
-                fprintf(stderr, "Error: expected iterations after -i!\n");
-                return EXIT_FAILURE;
-            }
-
-            iterations = atoi(argv[++i]);
-        }
-
-        if (strcmp(argv[i], "-t") == 0)
-        {
-            if (i == argc - 1)
-            {
-                fprintf(stderr, "Error: expected threads after -t!\n");
-                return EXIT_FAILURE;
-            }
-
-            threads = atoi(argv[++i]);
-        }
-
-        if (strcmp(argv[i], "--debug") == 0)
-        {
+        case 'n':
+            n = atoi(optarg);
+            break;
+        case 'i':
+            iterations = atoi(optarg);
+            break;
+        case 'x':
+            x = atoi(optarg);
+            break;
+        case 'y':
+            y = atoi(optarg);
+            break;
+        case 'z':
+            z = atoi(optarg);
+            break;
+        case 'a':
+            amplitude = atof(optarg);
+            break;
+        case 't':
+            threads = atoi(optarg);
+            break;
+        case 'd':
             debug = true;
+            break;
+        default:
+            fprintf(stderr, "Usage: poisson [-n size] [-x source x-poisition] [-y source y-position] [-z source z-position] [-a source amplitude]  [-i iterations] [-t threads] [-d] (for debug mode)\n");
+            exit(EXIT_FAILURE);
         }
     }
 
@@ -138,7 +139,15 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    source[(n * n * n) / 2] = 1;
+    // Default x,y, z
+    if (x < 0 || x > n - 1)
+        x = n / 2;
+    if (y < 0 || y > n - 1)
+        y = n / 2;
+    if (z < 0 || z > n - 1)
+        z = n / 2;
+
+    source[(z * n + y) * n + x] = amplitude;
 
 
     std::chrono::time_point time_start_r2 = std::chrono::high_resolution_clock::now();
