@@ -10,7 +10,6 @@
     #include <unistd.h>
 #endif // WINDOWS
 
-
 #include <chrono>
 #include <iostream>
 
@@ -68,15 +67,12 @@ void print_slice(int n, double* data, int ex_size = 0) {
         printf("\n");
     }
 }
-#ifdef _DEBUG
-    debug = true;
-#endif // DEBUG
 
 int main(int argc, char** argv)
 {
     // Default settings for solver
-    int iterations = 10;
-    int n = 5;
+    int iterations = 300;
+    int n = 7;
     int threads = 1;
     float delta = 1;
     int x = -1;
@@ -85,6 +81,10 @@ int main(int argc, char** argv)
     double amplitude = 1.0;
 
     int opt;
+
+#ifdef _DEBUG
+    debug = true;
+#endif // DEBUG
 
     // parse the command line arguments
     while ((opt = getopt(argc, argv, "h:n:i:x:y:z:a:t:d:")) != -1)
@@ -150,24 +150,30 @@ int main(int argc, char** argv)
     source[(z * n + y) * n + x] = amplitude;
 
 
-    std::chrono::time_point time_start_r2 = std::chrono::high_resolution_clock::now();
-
     // Calculate the resulting field with Dirichlet conditions
-    double* result_r2 = poisson_mixed_multithread(n, source, iterations, threads, delta);
+    double* result = nullptr;
+    std::chrono::time_point time_start = std::chrono::high_resolution_clock::now();
 
-    std::chrono::time_point time_end_r2 = std::chrono::high_resolution_clock::now();
+    if (threads == 1) {
+        result = poisson_mixed_r2(n, source, iterations, delta);
+    }
+    else {
+        result = poisson_mixed_multithread(n, source, iterations, threads, delta);
+    }
+
+    std::chrono::time_point time_end = std::chrono::high_resolution_clock::now();
 
     if (debug) {
-        std::chrono::duration<double> time_diff_r2 = time_end_r2 - time_start_r2;
-        std::cout << "Time taken: " << time_diff_r2.count() << "\n";
+        std::chrono::duration<double> time_diff = time_end - time_start;
+        std::cout << "Time taken: " << time_diff.count() << "\n";
     }
 
     if (n <= PRINT_THRESHOLD) {
-        print_slice(n, result_r2, 2);
+        print_slice(n, result, 2);
     }
 
     free(source);
-    free(result_r2);
+    free(result);
 
     return EXIT_SUCCESS;
 }
