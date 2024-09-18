@@ -20,4 +20,4 @@ extern bool debug;
  * @param delta         Grid spacing.
  * @return double*      Solution to Poissons equation.  Caller must free.
  */
-double* poisson_mixed_r2(const int n, const double* source, const int iterations, const double delta);
+double* poisson_mixed_r2(const int n, double* const source, const int iterations, const double delta);

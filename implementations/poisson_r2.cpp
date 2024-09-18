@@ -41,7 +41,7 @@ void test_build_boundary(void) {
 }
 
 
-double* poisson_mixed_r2(const int n, const double* source, const int iterations, const double delta)
+double* poisson_mixed_r2(const int n, double* const source, const int iterations, const double delta)
 {
     if (debug)
     {
@@ -67,15 +67,6 @@ double* poisson_mixed_r2(const int n, const double* source, const int iterations
         exit(EXIT_FAILURE);
     }
 
-    auto accessor = [n](double* src, int i, int j, int k) {
-            return src[((k+1) * (n+2) + (j+1)) * (n+2) + (i+1)];
-        };
-
-    auto cdiff_sum = [accessor](double* src, int i, int j, int k) {
-        double res = accessor(src, i - 1, j, k) + accessor(src, i + 1, j, k) + accessor(src, i, j - 1, k) + accessor(src, i, j + 1, k) + accessor(src, i, j, k - 1) + accessor(src, i, j, k + 1);
-        return res;
-        };
-
     // this scares me
     const int sz = n + 2;
     const double one_sixth = (1.0 / 6.0);
@@ -84,22 +75,31 @@ double* poisson_mixed_r2(const int n, const double* source, const int iterations
     {
         build_boundary(curr, n);
 
-        for (int i = 1; i < n+1; i++)
+        for (int k = 1; k < n+1; k++)
         {
             for (int j = 1; j < n+1; j++)
             {
-                for (int k = 1; k < n+1; k++)
+                double* row_b = curr + ((k * sz + j) * sz - 1);
+                double* row_f = curr + ((k * sz + j) * sz + 1);
+                double* row_up = curr + (((k+1) * sz + j) * sz);
+                double* row_low = curr + (((k-1) * sz + j) * sz);
+                double* row_l = curr + ((k * sz + (j+1)) * sz);
+                double* row_r = curr + ((k * sz + (j-1)) * sz);
+                double* src_row = source + (((k - 1) * n + (j - 1)) * n - 1);
+
+                for (int i = 1; i < n+1; i++)
                 {
-                    //double res = (1.0 / 6.0) * (cdiff_sum(curr, i, j, k) - (delta * delta * source[(k * n + j) * n + i]));
-                    double res = one_sixth * ((
-                        curr[(k * sz + j) * sz + (i - 1)] +
-                        curr[(k * sz + j) * sz + (i + 1)] +
-                        curr[(k * sz + (j - 1)) * sz + i] +
-                        curr[(k * sz + (j + 1)) * sz + i] +
-                        curr[((k - 1) * sz + j) * sz + i] +
-                        curr[((k + 1) * sz + j) * sz + i]) - 
-                        (delta_sq * source[((k-1) * n + (j-1)) * n + (i-1)]));
-                    next[(k * sz + j) * sz + i] = res;
+
+                    double res = (
+                        row_b[i] +
+                        row_f[i] +
+                        row_up[i] +
+                        row_low[i] +
+                        row_l[i] +
+                        row_r[i]);
+
+                    double src_val = (delta_sq * src_row[i]);
+                    next[(k * sz + j) * sz + i] = one_sixth * (res - src_val);
                 }
             }
         }
