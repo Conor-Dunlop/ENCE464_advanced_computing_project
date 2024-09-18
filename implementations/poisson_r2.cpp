@@ -77,18 +77,29 @@ double* poisson_mixed_r2(const int n, const double* source, const int iterations
         };
 
     // this scares me
+    const int sz = n + 2;
+    const double one_sixth = (1.0 / 6.0);
+    const double delta_sq = delta * delta;
     for (int iter = 0; iter < iterations; iter++)
     {
         build_boundary(curr, n);
 
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i < n+1; i++)
         {
-            for (int j = 0; j < n; j++)
+            for (int j = 1; j < n+1; j++)
             {
-                for (int k = 0; k < n; k++)
+                for (int k = 1; k < n+1; k++)
                 {
-                    double res = (1.0 / 6.0) * (cdiff_sum(curr, i, j, k) - (delta * delta * source[(k * n + j) * n + i]));
-                    next[((k + 1) * (n + 2) + (j + 1)) * (n + 2) + (i + 1)] = res;
+                    //double res = (1.0 / 6.0) * (cdiff_sum(curr, i, j, k) - (delta * delta * source[(k * n + j) * n + i]));
+                    double res = one_sixth * ((
+                        curr[(k * sz + j) * sz + (i - 1)] +
+                        curr[(k * sz + j) * sz + (i + 1)] +
+                        curr[(k * sz + (j - 1)) * sz + i] +
+                        curr[(k * sz + (j + 1)) * sz + i] +
+                        curr[((k - 1) * sz + j) * sz + i] +
+                        curr[((k + 1) * sz + j) * sz + i]) - 
+                        (delta_sq * source[((k-1) * n + (j-1)) * n + (i-1)]));
+                    next[(k * sz + j) * sz + i] = res;
                 }
             }
         }
