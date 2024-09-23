@@ -61,7 +61,7 @@ double* poisson_mixed_r2(const int n, double* const source, const int iterations
     double* next = (double*)calloc(buf_size, sizeof(double));
 
     // Ensure we haven't run out of memory
-    if (curr == nullptr || next == nullptr)
+    if (curr == NULL || next == NULL)
     {
         fprintf(stderr, "Error: ran out of memory when trying to allocate %i sized cube\n", n);
         exit(EXIT_FAILURE);

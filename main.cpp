@@ -8,15 +8,15 @@
     #include "getopt.h"
 #else
     #include <unistd.h>
-#endif // WINDOWS
+#endif
 
 
-#include <chrono>
+//#include <chrono>
 #include <iostream>
 
-#include "implementations/poisson_multithread.h"
+// #include "implementations/poisson_multithread.h"
 #include "implementations/poisson_r2.h"
-#include "implementations/poisson.h"
+// #include "implementations/poisson.h"
 
 #define PRINT_THRESHOLD 15
 
@@ -150,16 +150,16 @@ int main(int argc, char** argv)
     source[(z * n + y) * n + x] = amplitude;
 
 
-    std::chrono::time_point time_start_r2 = std::chrono::high_resolution_clock::now();
+    //std::chrono::time_point time_start_r2 = std::chrono::high_resolution_clock::now();
 
     // Calculate the resulting field with Dirichlet conditions
-    double* result_r2 = poisson_mixed_multithread(n, source, iterations, threads, delta);
+    double* result_r2 = poisson_mixed_r2(n, source, iterations, delta);
 
-    std::chrono::time_point time_end_r2 = std::chrono::high_resolution_clock::now();
+    //td::chrono::time_point time_end_r2 = std::chrono::high_resolution_clock::now();
 
     if (debug) {
-        std::chrono::duration<double> time_diff_r2 = time_end_r2 - time_start_r2;
-        std::cout << "Time taken: " << time_diff_r2.count() << "\n";
+        //std::chrono::duration<double> time_diff_r2 = time_end_r2 - time_start_r2;
+        //std::cout << "Time taken: " << time_diff_r2.count() << "\n";
     }
 
     if (n <= PRINT_THRESHOLD) {

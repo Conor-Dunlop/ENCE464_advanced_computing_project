@@ -3,9 +3,12 @@ all: poisson
 # -g outputs debugging information
 # -Wall enables all warnings
 # -pthread configures threading
-CFLAGS = -g -Wall -pthread
+CFLAGS = -pg -g -Wall -pthread
+LDFLAGS += $(CFLAGS)
+CXXFLAGS = $(CFLAGS)
+VPATH += implementations
 
-poisson: main.cpp poisson.cpp poisson_r2.cpp
+poisson: main.o poisson_r2.o
 
 .PHONY: disassembly
 disassembly: poisson.s
@@ -20,3 +23,6 @@ test: poisson
 .PHONY: clean
 clean:
 	rm -f poisson *.o *.s
+
+
+

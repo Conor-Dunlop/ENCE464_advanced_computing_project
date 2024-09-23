@@ -4,8 +4,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <iostream>
-#include <vector>
+// #include <iostream>
+// #include <vector>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern bool debug;
 
@@ -21,3 +25,7 @@ extern bool debug;
  * @return double*      Solution to Poissons equation.  Caller must free.
  */
 double* poisson_mixed_r2(const int n, double* const source, const int iterations, const double delta);
+
+#ifdef __cplusplus
+};
+#endif
