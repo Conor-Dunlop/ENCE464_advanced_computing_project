@@ -1,0 +1,230 @@
+--------------------------------------------------------------------------------
+-- Metadata
+--------------------------------------------------------------------------------
+Invocation:       /usr/bin/cg_annotate cachegrind.out.20433
+Command:          ./poisson -n 51 -i 10
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Threshold:        0.1%
+Annotation:       on
+
+--------------------------------------------------------------------------------
+-- Summary
+--------------------------------------------------------------------------------
+Ir_________________ 
+
+96,048,983 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+-- File:function summary
+--------------------------------------------------------------------------------
+  Ir_______________________  file:function
+
+< 94,139,940 (98.0%, 98.0%)  /file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/implementations/poisson_r2.c:
+  90,311,580 (94.0%)           poisson_mixed_r2
+   3,828,360  (4.0%)           build_boundary
+
+<    774,647  (0.8%, 98.8%)  ./elf/./elf/dl-lookup.c:
+     481,952  (0.5%)           do_lookup_x
+     181,889  (0.2%)           _dl_lookup_symbol_x
+     110,806  (0.1%)           check_match
+
+<    484,084  (0.5%, 99.3%)  ./elf/../sysdeps/generic/dl-new-hash.h:_dl_lookup_symbol_x
+
+<    145,613  (0.2%, 99.5%)  ./elf/./elf/dl-reloc.c:_dl_relocate_object
+
+<    117,711  (0.1%, 99.6%)  ./elf/../sysdeps/x86_64/dl-machine.h:
+     117,582  (0.1%)           _dl_relocate_object
+
+<    109,783  (0.1%, 99.7%)  ./elf/./elf/do-rel.h:
+     109,727  (0.1%)           _dl_relocate_object
+
+--------------------------------------------------------------------------------
+-- Function:file summary
+--------------------------------------------------------------------------------
+  Ir_______________________  function:file
+
+> 90,311,580 (94.0%, 94.0%)  poisson_mixed_r2:/file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/implementations/poisson_r2.c
+
+>  3,828,360  (4.0%, 98.0%)  build_boundary:/file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/implementations/poisson_r2.c
+
+>    665,973  (0.7%, 98.7%)  _dl_lookup_symbol_x:
+     484,084  (0.5%)           ./elf/../sysdeps/generic/dl-new-hash.h
+     181,889  (0.2%)           ./elf/./elf/dl-lookup.c
+
+>    498,750  (0.5%, 99.2%)  do_lookup_x:
+     481,952  (0.5%)           ./elf/./elf/dl-lookup.c
+
+>    383,274  (0.4%, 99.6%)  _dl_relocate_object:
+     145,613  (0.2%)           ./elf/./elf/dl-reloc.c
+     117,582  (0.1%)           ./elf/../sysdeps/x86_64/dl-machine.h
+     109,727  (0.1%)           ./elf/./elf/do-rel.h
+
+>    110,806  (0.1%, 99.7%)  check_match:./elf/./elf/dl-lookup.c
+
+--------------------------------------------------------------------------------
+-- Annotated source file: ./elf/../sysdeps/generic/dl-new-hash.h
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- ./elf/../sysdeps/generic/dl-new-hash.h
+
+--------------------------------------------------------------------------------
+-- Annotated source file: ./elf/../sysdeps/x86_64/dl-machine.h
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- ./elf/../sysdeps/x86_64/dl-machine.h
+
+--------------------------------------------------------------------------------
+-- Annotated source file: ./elf/./elf/dl-lookup.c
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- ./elf/./elf/dl-lookup.c
+
+--------------------------------------------------------------------------------
+-- Annotated source file: ./elf/./elf/dl-reloc.c
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- ./elf/./elf/dl-reloc.c
+
+--------------------------------------------------------------------------------
+-- Annotated source file: ./elf/./elf/do-rel.h
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- ./elf/./elf/do-rel.h
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/implementations/poisson_r2.c
+--------------------------------------------------------------------------------
+Ir________________ 
+
+         .          #include "poisson_r2.h"
+         .          
+        70  (0.0%)  static void build_boundary(double* buf, int32_t n) {
+        30  (0.0%)      const int32_t ln_s = (n + 2);
+        60  (0.0%)      const int32_t pl_s = (n + 2) * (n + 2);
+        50  (0.0%)      const int32_t top_plane_idx = pl_s * (n+1);
+     2,090  (0.0%)      for (int32_t i = 0; i < n; i++) {
+   106,590  (0.1%)          for (int32_t j = 0; j < n; j++)
+         .                  {
+   364,140  (0.4%)              buf[ln_s * (i + 1) + (j + 1) + pl_s] = -1.0;
+   390,150  (0.4%)              buf[ln_s * (i + 1) + (j + 1) + pl_s * (n)] = 1.0;
+   702,270  (0.7%)              buf[pl_s * (i + 1) + ln_s * (j + 1)] = buf[pl_s * (i + 1) + ln_s * (j + 1) + 2];
+   832,320  (0.9%)              buf[pl_s * (i + 1) + ln_s * (j + 1) + (n + 1)] = buf[pl_s * (i + 1) + ln_s * (j + 1) + (n - 1)];
+   650,250  (0.7%)              buf[pl_s * (i + 1) + (j + 1)] = buf[pl_s * (i + 1) + (j + 1) + ln_s * 2];
+   780,300  (0.8%)              buf[pl_s * (i + 1) + (j + 1) + ln_s * (n + 1)] = buf[pl_s * (i + 1) + (j + 1) + ln_s * (n - 1)];
+         .                  }
+         .              }
+        40  (0.0%)  }
+         .          
+         .          static void test_build_boundary(void) {
+         .              uint32_t n = 5;
+         .          
+         .              size_t buf_size = (n + 2) * (n + 2) * (n + 2);
+         .              double* curr = (double*)calloc(buf_size, sizeof(double));
+         .          
+         .              int32_t val = 0.0;
+-- line 26 ----------------------------------------
+-- line 37 ----------------------------------------
+         .                  }
+         .              }
+         .          
+         .              build_boundary(curr, n);
+         .          }
+         .          
+         .          
+         .          double* poisson_mixed_r2(const int n, double* const source, const int iterations, const double delta)
+         9  (0.0%)  {
+         3  (0.0%)      if (debug)
+         .              {
+         9  (0.0%)          printf("Starting solver with:\n"
+         .                      "n = %i\n"
+         .                      "iterations = %i\n"
+         .                      "delta = %f\n",
+         .                      n, iterations, delta);
+         .          
+         .                  // test_build_boundary();
+         .              }
+         .          
+         .              // Allocate some buffers to calculate the solution in
+        10  (0.0%)      size_t buf_size = (n + 2) * (n + 2) * (n + 2);
+         .          
+         5  (0.0%)      double* curr = (double*)calloc(buf_size, sizeof(double));
+         5  (0.0%)      double* next = (double*)calloc(buf_size, sizeof(double));
+         .          
+         .              // Ensure we haven't run out of memory
+         4  (0.0%)      if (curr == NULL || next == NULL)
+         .              {
+         .                  fprintf(stderr, "Error: ran out of memory when trying to allocate %i sized cube\n", n);
+         .                  exit(EXIT_FAILURE);
+         .              }
+         .          
+         .              // this scares me
+         3  (0.0%)      const int sz = n + 2;
+         2  (0.0%)      const double one_sixth = (1.0 / 6.0);
+         3  (0.0%)      const double delta_sq = delta * delta;
+        45  (0.0%)      for (int iter = 0; iter < iterations; iter++)
+         .              {
+        50  (0.0%)          build_boundary(curr, n);
+         .          
+     2,090  (0.0%)          for (int k = 1; k < n+1; k++)
+         .                  {
+   106,590  (0.1%)              for (int j = 1; j < n+1; j++)
+         .                      {
+   286,110  (0.3%)                  double* row_b = curr + ((k * sz + j) * sz - 0);
+   312,120  (0.3%)                  double* row_f = curr + ((k * sz + j) * sz + 2);
+   338,130  (0.4%)                  double* row_up = curr + (((k+1) * sz + j) * sz + 1);
+   338,130  (0.4%)                  double* row_low = curr + (((k-1) * sz + j) * sz + 1);
+   312,120  (0.3%)                  double* row_l = curr + ((k * sz + (j+1)) * sz + 1);
+   312,120  (0.3%)                  double* row_r = curr + ((k * sz + (j-1)) * sz + 1);
+   312,120  (0.3%)                  double* src_row = source + (((k - 1) * n + (j - 1)) * n - 0);
+   312,120  (0.3%)                  double* dest_row = next + ((k * sz + j) * sz + 1);
+         .          
+ 5,436,090  (5.7%)                  for (int i = 0; i < n; i++)
+         .                          {
+         .          
+ 2,653,020  (2.8%)                      double res = (
+ 9,285,570  (9.7%)                          row_b[i] +
+ 9,285,570  (9.7%)                          row_f[i] +
+ 9,285,570  (9.7%)                          row_up[i] +
+ 9,285,570  (9.7%)                          row_low[i] +
+ 7,959,060  (8.3%)                          row_l[i] +
+ 7,959,060  (8.3%)                          row_r[i]);
+         .          
+17,244,630 (18.0%)                      double src_val = one_sixth * (res - (delta_sq * src_row[i]));
+ 9,285,570  (9.7%)                      dest_row[i] = src_val;
+         .                          }
+         .                      }
+         .                  }
+         .          
+         .                  // swap current and next
+        20  (0.0%)          double* curr_temp = curr;
+        20  (0.0%)          curr = next;
+        20  (0.0%)          next = curr_temp;
+         .              }
+         .          
+         .          
+         .              // Free one of the buffers and return the correct answer in the other.
+         .              // The caller is now responsible for free'ing the returned pointer.
+         3  (0.0%)      free(next);
+         .          
+         3  (0.0%)      if (debug)
+         .              {
+         3  (0.0%)          printf("Finished solving.\n");
+         .              }
+         .          
+         1  (0.0%)      return curr;
+         2  (0.0%)  
+
+--------------------------------------------------------------------------------
+-- Annotation summary
+--------------------------------------------------------------------------------
+Ir________________ 
+
+94,139,940 (98.0%)    annotated: files known & above threshold & readable, line numbers known
+         0            annotated: files known & above threshold & readable, line numbers unknown
+         0          unannotated: files known & above threshold & two or more non-identical
+ 1,631,838  (1.7%)  unannotated: files known & above threshold & unreadable 
+   251,015  (0.3%)  unannotated: files known & below threshold
+    26,190  (0.0%)  unannotated: files unknown
+
