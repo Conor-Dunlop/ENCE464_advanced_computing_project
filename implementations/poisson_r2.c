@@ -75,6 +75,8 @@ double* poisson_mixed_r2(const int n, double* const source, const int iterations
     {
         build_boundary(curr, n);
 
+        // Potentialy swap J and K if possiable as may help memory access speed
+
         for (int k = 1; k < n+1; k++)
         {
             for (int j = 1; j < n+1; j++)
