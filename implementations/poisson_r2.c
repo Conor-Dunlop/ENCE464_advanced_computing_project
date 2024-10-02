@@ -92,7 +92,7 @@ double* poisson_mixed_r2(const int n, double* const source, const int iterations
 
                 for (int i = 0; i < n; i++)
                 {
-
+                    //potential speedup makeing list (maybe linked) for i as it is the same length n each loop
                     double res = (
                         row_b[i] +
                         row_f[i] +
