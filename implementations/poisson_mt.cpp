@@ -1,4 +1,4 @@
-#include "poisson_multithread.h"
+#include "poisson_mt.h"
 
 static void build_boundary(double* buf, int32_t n) {
     const int32_t ln_s = (n + 2);
