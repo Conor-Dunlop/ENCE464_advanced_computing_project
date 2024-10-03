@@ -1,4 +1,4 @@
-#include "poisson.h"
+#include "poisson_r2.h"
 
 static void build_boundary(double* buf, int32_t n) {
     const int32_t ln_s = (n + 2);
