@@ -16,8 +16,8 @@ project ("poisson")
 
 # Add source to this project's executable.
 add_executable (poisson "main.cpp")
-target_include_directories(poisson PRIVATE ./include ./include/thread_pool)
-target_sources(poisson PRIVATE "implementations/poisson_r2.cpp" "implementations/poisson_multithread.cpp")
+target_include_directories(poisson PRIVATE ./include)
+target_sources(poisson PRIVATE "implementations/poisson.cpp" "implementations/poisson_mt.cpp")
 set_property(TARGET poisson PROPERTY CXX_STANDARD 20)
 
 

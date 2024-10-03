@@ -9,8 +9,8 @@
 #include <chrono>
 #include <iostream>
 
-#include "implementations/poisson_multithread.h"
-#include "implementations/poisson_r2.h"
+#include "implementations/poisson_mt.h"
+#include "implementations/poisson.h"
 
 #define PRINT_THRESHOLD 15
 
