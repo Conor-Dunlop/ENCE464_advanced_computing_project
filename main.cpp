@@ -3,19 +3,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#ifdef _WIN32
-    #include "getopt.h"
-#else
-    #include <unistd.h>
-#endif // WINDOWS
+#include <unistd.h>
+#include <immintrin.h>
 
 #include <chrono>
 #include <iostream>
 
 #include "implementations/poisson_multithread.h"
 #include "implementations/poisson_r2.h"
-#include "implementations/poisson.h"
 
 #define PRINT_THRESHOLD 15
 
@@ -72,8 +67,8 @@ int main(int argc, char** argv)
 {
     // Default settings for solver
     int iterations = 300;
-    int n = 7;
-    int threads = 1;
+    int n = 301;
+    int threads = 8;
     float delta = 1;
     int x = -1;
     int y = -1;
@@ -148,7 +143,6 @@ int main(int argc, char** argv)
         z = n / 2;
 
     source[(z * n + y) * n + x] = amplitude;
-
 
     // Calculate the resulting field with Dirichlet conditions
     double* result = nullptr;
