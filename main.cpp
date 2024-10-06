@@ -9,8 +9,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "implementations/poisson_mt.h"
-#include "implementations/poisson.h"
+#include "poisson_mt.h"
 
 #define PRINT_THRESHOLD 15
 
@@ -68,7 +67,7 @@ int main(int argc, char** argv)
     // Default settings for solver
     int iterations = 100;
     int n = 301;
-    int threads = 8;
+    int threads = 1;
     float delta = 1;
     int x = -1;
     int y = -1;
@@ -148,12 +147,7 @@ int main(int argc, char** argv)
     double* result = nullptr;
     std::chrono::time_point time_start = std::chrono::high_resolution_clock::now();
 
-    if (threads == 1) {
-        result = poisson_mixed_r2(n, source, iterations, delta);
-    }
-    else {
-        result = poisson_mixed_multithread(n, source, iterations, threads, delta);
-    }
+    result = poisson_mixed_multithread(n, source, iterations, threads, delta);
 
     std::chrono::time_point time_end = std::chrono::high_resolution_clock::now();
 
