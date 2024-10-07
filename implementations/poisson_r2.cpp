@@ -71,14 +71,28 @@ double* poisson_mixed_r2(const int n, double* const source, const int iterations
     const int sz = n + 2;
     const double one_sixth = (1.0 / 6.0);
     const double delta_sq = delta * delta;
-    for (int iter = 0; iter < iterations; iter++)
-    {
-        build_boundary(curr, n);
+    std::vector<uint16_t> ks_and_js(n+1);
+   for (uint16_t temp = 1; temp < n+1; temp++)
+   {
+       ks_and_js[temp-1] = temp;
+   }
 
-        for (int k = 1; k < n+1; k++)
-        {
-            for (int j = 1; j < n+1; j++)
-            {
+
+   for (int iter = 0; iter < iterations; iter++)
+   {
+       build_boundary(curr, n);
+
+
+
+
+       // Potentialy swap J and K if possible as may help memory access speed
+
+
+       for (uint16_t k : ks_and_js)
+       {
+           for (uint16_t j : ks_and_js)
+           {
+
                 double* row_b = curr + ((k * sz + j) * sz - 0);
                 double* row_f = curr + ((k * sz + j) * sz + 2);
                 double* row_up = curr + (((k+1) * sz + j) * sz + 1);

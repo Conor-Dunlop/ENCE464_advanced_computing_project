@@ -1,0 +1,306 @@
+--------------------------------------------------------------------------------
+-- Metadata
+--------------------------------------------------------------------------------
+Invocation:       /usr/bin/cg_annotate cachegrind.out.1384
+Command:          ./O3_native_vectors -n 51 -i 10
+Events recorded:  Ir
+Events shown:     Ir
+Event sort order: Ir
+Threshold:        0.1%
+Annotation:       on
+
+--------------------------------------------------------------------------------
+-- Summary
+--------------------------------------------------------------------------------
+Ir________________ 
+
+9,490,838 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+-- File:function summary
+--------------------------------------------------------------------------------
+  Ir______________________  file:function
+
+< 7,557,445 (79.6%, 79.6%)  /file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/main.cpp:
+  7,557,322 (79.6%)           poisson_mixed_r2(int, double*, int, double)
+
+<   776,687  (8.2%, 87.8%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-lookup.c:
+    484,245  (5.1%)           do_lookup_x
+    181,695  (1.9%)           _dl_lookup_symbol_x
+    110,747  (1.2%)           check_match
+
+<   484,168  (5.1%, 92.9%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/dl-new-hash.h:_dl_lookup_symbol_x
+
+<   145,418  (1.5%, 94.4%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-reloc.c:
+    145,250  (1.5%)           _dl_relocate_object
+
+<   123,859  (1.3%, 95.8%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/x86_64/dl-machine.h:
+    123,764  (1.3%)           _dl_relocate_object
+
+<   108,800  (1.1%, 96.9%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/do-rel.h:
+    108,762  (1.1%)           _dl_relocate_object
+
+<    82,091  (0.9%, 97.8%)  ???:
+     33,179  (0.3%)           ???
+     12,192  (0.1%)           std::locale::_Impl::_M_install_facet(std::locale::id const*, std::locale::facet const*)
+      9,728  (0.1%)           btowc
+
+<    63,738  (0.7%, 98.4%)  /usr/lib/debug/source/bootstrap/glibc.bst/string/../sysdeps/x86_64/multiarch/../multiarch/strcmp-sse2.S:
+     63,681  (0.7%)           strcmp
+
+<    42,074  (0.4%, 98.9%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-tunables.c:
+     41,062  (0.4%)           __GI___tunables_init
+
+<    19,670  (0.2%, 99.1%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/ldsodefs.h:
+     10,301  (0.1%)           _dl_relocate_object
+
+<    13,473  (0.1%, 99.2%)  /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-version.c:
+     13,361  (0.1%)           _dl_check_map_versions
+
+--------------------------------------------------------------------------------
+-- Function:file summary
+--------------------------------------------------------------------------------
+  Ir______________________  function:file
+
+> 7,557,322 (79.6%, 79.6%)  poisson_mixed_r2(int, double*, int, double):/file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/main.cpp
+
+>   665,863  (7.0%, 86.6%)  _dl_lookup_symbol_x:
+    484,168  (5.1%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/dl-new-hash.h
+    181,695  (1.9%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-lookup.c
+
+>   501,025  (5.3%, 91.9%)  do_lookup_x:
+    484,245  (5.1%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-lookup.c
+
+>   388,077  (4.1%, 96.0%)  _dl_relocate_object:
+    145,250  (1.5%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-reloc.c
+    123,764  (1.3%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/x86_64/dl-machine.h
+    108,762  (1.1%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/do-rel.h
+     10,301  (0.1%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/ldsodefs.h
+
+>   110,915  (1.2%, 97.2%)  check_match:
+    110,747  (1.2%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-lookup.c
+
+>    63,703  (0.7%, 97.9%)  strcmp:
+     63,681  (0.7%)           /usr/lib/debug/source/bootstrap/glibc.bst/string/../sysdeps/x86_64/multiarch/../multiarch/strcmp-sse2.S
+
+>    47,476  (0.5%, 98.4%)  __GI___tunables_init:
+     41,062  (0.4%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-tunables.c
+
+>    33,179  (0.3%, 98.7%)  ???:???
+
+>    13,406  (0.1%, 98.8%)  _dl_check_map_versions:
+     13,361  (0.1%)           /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-version.c
+
+>    12,192  (0.1%, 99.0%)  std::locale::_Impl::_M_install_facet(std::locale::id const*, std::locale::facet const*):???
+
+>     9,728  (0.1%, 99.1%)  btowc:???
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/main.cpp
+--------------------------------------------------------------------------------
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@ WARNING @@ WARNING @@ WARNING @@ WARNING @@ WARNING @@ WARNING @@ WARNING @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ Original source files are all newer than data file 'cachegrind.out.1384':
+@ - /file/UsersC/cdu58/Home/Courses/ENCE464/term2/Group08/main.cpp
+@ Annotations may not be correct.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+Ir_______________ 
+
+-- line 13 ----------------------------------------
+        .          #define PRINT_THRESHOLD 15
+        .          
+        .          bool debug = true;
+        .          
+        .          static void build_boundary(double* buf, int32_t n) {
+        .              const int32_t ln_s = n + 2;
+        .              const int32_t pl_s = (n + 2) * (n + 2);
+        .              
+   28,103  (0.3%)      for (int32_t i = 1; i <= n; i++) {
+   24,991  (0.3%)          for (int32_t j = 1; j <= n; j++) {
+   14,792  (0.2%)              buf[ln_s * (i + 1) + (j + 1) + pl_s] = -1.0; // Bottom
+   12,345  (0.1%)              buf[ln_s * (i + 1) + (j + 1) + pl_s * (n + 1)] = 1.0; // Top
+        .                  }
+        .              }
+        .          }
+        .          
+       17  (0.0%)  double* poisson_mixed_r2(const int n, double* const source, const int iterations, const double delta) {
+        2  (0.0%)      if (debug) {
+        5  (0.0%)          printf("Starting solver with:\n"
+        .                         "n = %i\n"
+        .                         "iterations = %i\n"
+        .                         "delta = %f\n", n, iterations, delta);
+        .              }
+        .          
+        9  (0.0%)      size_t buf_size = (n + 2) * (n + 2) * (n + 2);
+        6  (0.0%)      double* curr = (double*)calloc(buf_size, sizeof(double));
+        6  (0.0%)      double* next = (double*)calloc(buf_size, sizeof(double));
+        .          
+        4  (0.0%)      if (!curr || !next) {
+        .                  fprintf(stderr, "Error: ran out of memory when trying to allocate %i sized cube\n", n);
+        .                  exit(EXIT_FAILURE);
+        .              }
+        .          
+        2  (0.0%)      const double delta_sq = delta * delta;
+        .              const double one_sixth = 1.0 / 6.0;
+        .          
+      227  (0.0%)      for (int iter = 0; iter < iterations; iter++) {
+        .                  build_boundary(curr, n);
+    8,670  (0.1%)          for (int k = 1; k <= n; k++) {
+  703,800  (7.4%)              for (int j = 1; j <= n; j++) {
+        .                          double* row_b = curr + ((k * (n + 2) + j) * (n + 2));
+   78,030  (0.8%)                  double* row_f = curr + ((k * (n + 2) + j) * (n + 2) + 2);
+        .                          double* src_row = source + ((k - 1) * n + (j - 1) * n);
+        .          
+2,160,360 (22.8%)                  for (int i = 0; i < n; i++) {
+1,534,590 (16.2%)                      double res = row_b[i] + row_f[i] + 
+  494,190  (5.2%)                                   curr[((k + 1) * (n + 2) + j) * (n + 2) + i + 1] +
+  494,190  (5.2%)                                   curr[((k - 1) * (n + 2) + j) * (n + 2) + i + 1] +
+  130,050  (1.4%)                                   curr[(k * (n + 2) + j + 1) * (n + 2) + i + 1] +
+  468,180  (4.9%)                                   curr[(k * (n + 2) + j - 1) * (n + 2) + i + 1];
+        .          
+1,404,740 (14.8%)                      next[(k * (n + 2) + j) * (n + 2) + i + 1] = one_sixth * (res - (delta_sq * src_row[i]));
+        .                          }
+        .                      }
+        .                  }
+        .          
+        .                  double* temp = curr;
+        .                  curr = next;
+        .                  next = temp;
+        .              }
+        .          
+        2  (0.0%)      free(next);
+        .              return curr;
+       11  (0.0%)  }
+        .          
+        .          void print_slice(int n, double* data) {
+        .              for (int x = 0; x < n; ++x) {
+        .                  for (int y = 0; y < n; ++y) {
+        .                      printf("%0.5f ", data[((n / 2) * (n + 2) + y + 1) * (n + 2) + (x + 1)]);
+        .                  }
+        .                  printf("\n");
+        .              }
+        .          }
+        .          
+       11  (0.0%)  int main(int argc, char** argv) {
+        4  (0.0%)      int iterations = 10, n = 5;
+        .              double delta = 1;
+        2  (0.0%)      double amplitude = 1.0;
+        3  (0.0%)      int x = -1, y = -1, z = -1;
+        .          
+        .              int opt;
+       18  (0.0%)      while ((opt = getopt(argc, argv, "h:n:i:x:y:z:a:d:")) != -1) {
+       13  (0.0%)          switch (opt) {
+        .                      case 'h':
+        .                          printf("Usage: poisson [-n size] [-x source x-poisition] [-y source y-position] [-z source z-position] [-a source amplitude] [-i iterations] [-d] (for debug mode)\n");
+        1  (0.0%)                  return EXIT_SUCCESS;
+        1  (0.0%)              case 'n': n = atoi(optarg); break;
+        1  (0.0%)              case 'i': iterations = atoi(optarg); break;
+        .                      case 'x': x = atoi(optarg); break;
+        .                      case 'y': y = atoi(optarg); break;
+        .                      case 'z': z = atoi(optarg); break;
+        .                      case 'a': amplitude = atof(optarg); break;
+        .                      case 'd': debug = true; break;
+        .                      default: fprintf(stderr, "Usage: poisson [-n size] [-x source x-poisition] [-y source y-position] [-z source z-position] [-a source amplitude] [-i iterations] [-d] (for debug mode)\n"); exit(EXIT_FAILURE);
+        .                  }
+        .              }
+        .          
+        2  (0.0%)      if (n % 2 == 0) {
+        .                  fprintf(stderr, "Error: n should be an odd number!\n");
+        .                  return EXIT_FAILURE;
+        .              }
+        .          
+        7  (0.0%)      double* source = (double*)calloc(n * n * n, sizeof(double));
+        2  (0.0%)      if (!source) {
+        .                  fprintf(stderr, "Error: failed to allocate source term (n=%i)\n", n);
+        .                  return EXIT_FAILURE;
+        .              }
+        .          
+        7  (0.0%)      if (x < 0) x = n / 2;
+        7  (0.0%)      if (y < 0) y = n / 2;
+        7  (0.0%)      if (z < 0) z = n / 2;
+        .          
+       10  (0.0%)      source[(z * n + y) * n + x] = amplitude;
+        .          
+        7  (0.0%)      double* result_r2 = poisson_mixed_r2(n, source, iterations, delta);
+        .          
+        2  (0.0%)      if (debug) {
+        3  (0.0%)          printf("Finished solving.\n");
+        .              }
+        .          
+        2  (0.0%)      if (n <= PRINT_THRESHOLD) {
+        .                  print_slice(n, result_r2);
+        .              }
+        .          
+        2  (0.0%)      free(source);
+        2  (0.0%)      free(result_r2);
+        1  (0.0%)      return EXIT_SUCCESS;
+        8  (0.0%)  }
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/dl-new-hash.h
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/dl-new-hash.h
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/ldsodefs.h
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/generic/ldsodefs.h
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/x86_64/dl-machine.h
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/../sysdeps/x86_64/dl-machine.h
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-lookup.c
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-lookup.c
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-reloc.c
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-reloc.c
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-tunables.c
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-tunables.c
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-version.c
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/dl-version.c
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/elf/do-rel.h
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/elf/do-rel.h
+
+--------------------------------------------------------------------------------
+-- Annotated source file: /usr/lib/debug/source/bootstrap/glibc.bst/string/../sysdeps/x86_64/multiarch/../multiarch/strcmp-sse2.S
+--------------------------------------------------------------------------------
+Unannotated because one or more of these original files are unreadable:
+- /usr/lib/debug/source/bootstrap/glibc.bst/string/../sysdeps/x86_64/multiarch/../multiarch/strcmp-sse2.S
+
+--------------------------------------------------------------------------------
+-- Annotation summary
+--------------------------------------------------------------------------------
+Ir_______________ 
+
+7,557,445 (79.6%)    annotated: files known & above threshold & readable, line numbers known
+        0            annotated: files known & above threshold & readable, line numbers unknown
+        0          unannotated: files known & above threshold & two or more non-identical
+1,777,887 (18.7%)  unannotated: files known & above threshold & unreadable 
+   73,415  (0.8%)  unannotated: files known & below threshold
+   82,091  (0.9%)  unannotated: files unknown
+
