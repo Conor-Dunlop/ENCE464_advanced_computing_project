@@ -7,6 +7,7 @@
 #include <iostream>
 #include <thread>
 #include "thread_pool/thread_pool.h"
+#include <immintrin.h>
 
 extern bool debug;
 
