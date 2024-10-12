@@ -1,6 +1,6 @@
 {
     "buildType": {
-        "default": "Debug",
+        "default": "Release",
         "description": "Build Type Selection",
         "choices": {
             "Debug": {
@@ -16,7 +16,7 @@
         }
     },
     "simd": {
-        "default": "Debug",
+        "default": "Scalar",
         "description": "SIMD Type",
         "choices": {
             "Scalar": {
