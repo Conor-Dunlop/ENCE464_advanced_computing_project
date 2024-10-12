@@ -9,15 +9,23 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-add_compile_options(-mavx512f -march=znver4)
+add_compile_options(-march=native)
 
 project ("poisson")
 
 # Add source to this project's executable.
 add_executable (poisson "main.cpp")
 target_include_directories(poisson PRIVATE ./include)
-target_sources(poisson PRIVATE "poisson_mt.cpp")
 set_property(TARGET poisson PROPERTY CXX_STANDARD 20)
 
+target_sources(poisson PRIVATE "poisson_mt.cpp")
 
-# TODO: Add tests and install targets if needed.
+# SIMD selection.
+if(SIMD STREQUAL "SCALAR")
+  target_sources(poisson PRIVATE "calc_scalar.cpp")
+elseif(SIMD STREQUAL "AVX2")
+  target_sources(poisson PRIVATE "calc_avx2.cpp")
+elseif(SIMD STREQUAL "AVX512")
+  target_sources(poisson PRIVATE "calc_avx512.cpp")
+endif()
+

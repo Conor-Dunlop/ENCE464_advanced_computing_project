@@ -9,7 +9,6 @@ cachegrind.out.*
 
 _minted-*/
 /.vs
-/.vscode
 /build
 /int
 /out
