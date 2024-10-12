@@ -65,9 +65,9 @@ void print_slice(int n, double* data, int ex_size = 0) {
 int main(int argc, char** argv)
 {
     // Default settings for solver
-    int iterations = 100;
-    int n = 301;
-    int threads = 8;
+    int iterations = 300;
+    int n = 7;
+    int threads = 1;
     float delta = 1;
     int x = -1;
     int y = -1;

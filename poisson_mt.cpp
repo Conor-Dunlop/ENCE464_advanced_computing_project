@@ -3,7 +3,6 @@
 static void build_boundary(double* buf, int32_t n) {
     const int32_t ln_s = (n + 2);
     const int32_t pl_s = (n + 2) * (n + 2);
-    const int32_t top_plane_idx = pl_s * (n + 1);
     for (int32_t i = 0; i < n; i++) {
         for (int32_t j = 0; j < n; j++)
         {

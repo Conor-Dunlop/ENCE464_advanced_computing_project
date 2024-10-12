@@ -9,9 +9,7 @@ void compute_func(const int k, double* curr, double* next, double* const source,
     __m512d one_sixth = _mm512_set1_pd(1.0 / 6.0);
     __m512d dsq_sixth = _mm512_set1_pd(delta_sq_six);
 
-    const int iter_step = 8;
-    int final_row_sz = n%iter_step;
-    int num_iter = n/iter_step;
+    const int iter_step = 8; // Eight doubles in one AVX512 register
 
     for (int j = 1; j < n + 1; j++)
     {
@@ -23,8 +21,9 @@ void compute_func(const int k, double* curr, double* next, double* const source,
         double* row_r = curr + ((k * sz + (j - 1)) * sz + 1);
         double* src_row = source + (((k - 1) * n + (j - 1)) * n - 0);
         double* dest_row = next + ((k * sz + j) * sz + 1);
-
-        for (int i = 0; i < n; i += iter_step)
+        
+        size_t i = 0;
+        for (; i+iter_step <= n; i+=iter_step)
         {
             __m512d a = _mm512_load_pd(&row_b[i]);
             __m512d b = _mm512_load_pd(&row_f[i]);
@@ -45,6 +44,31 @@ void compute_func(const int k, double* curr, double* next, double* const source,
             __m512d src_val = _mm512_mul_pd(src_val_int, dsq_sixth);
             __m512d final = _mm512_fmsub_pd(res, one_sixth, src_val);
             _mm512_store_pd(&dest_row[i], final);
+        }
+
+        if (i < n) // exclude the case where the remainder is zero
+        {
+            __mmask8 final_mask = (1<<(n-i))-1;
+
+            __m512d a = _mm512_maskz_load_pd(final_mask, &row_b[i]);
+            __m512d b = _mm512_maskz_load_pd(final_mask, &row_f[i]);
+            __m512d res_a = _mm512_maskz_add_pd(final_mask, a, b);
+
+            __m512d c = _mm512_maskz_load_pd(final_mask, &row_up[i]);
+            __m512d d = _mm512_maskz_load_pd(final_mask, &row_low[i]);
+            __m512d res_b = _mm512_maskz_add_pd(final_mask, c, d);
+
+            __m512d e = _mm512_maskz_load_pd(final_mask, &row_l[i]);
+            __m512d f = _mm512_maskz_load_pd(final_mask, &row_r[i]);
+            __m512d res_c = _mm512_maskz_add_pd(final_mask, e, f);
+            
+            __m512d res_mid = _mm512_maskz_add_pd(final_mask, res_a, res_b);
+            __m512d res = _mm512_maskz_add_pd(final_mask, res_mid, res_c);
+
+            __m512d src_val_int = _mm512_maskz_load_pd(final_mask, &src_row[i]);
+            __m512d src_val = _mm512_maskz_mul_pd(final_mask, src_val_int, dsq_sixth);
+            __m512d final = _mm512_maskz_fmsub_pd(final_mask, res, one_sixth, src_val);
+            _mm512_mask_store_pd(&dest_row[i], final_mask, final);
         }
     }
 }
