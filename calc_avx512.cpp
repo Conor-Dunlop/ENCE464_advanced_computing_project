@@ -46,7 +46,7 @@ void compute_func(const int k, double* curr, double* next, double* const source,
             _mm512_store_pd(&dest_row[i], final);
         }
 
-        if (i < n) // exclude the case where the remainder is zero
+        if (i < n) // The remaining number is less than 8
         {
             __mmask8 final_mask = (1<<(n-i))-1;
 

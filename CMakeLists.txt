@@ -9,8 +9,6 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-add_compile_options(-march=native)
-
 project ("poisson")
 
 # Add source to this project's executable.
@@ -25,7 +23,9 @@ if(SIMD STREQUAL "SCALAR")
   target_sources(poisson PRIVATE "calc_scalar.cpp")
 elseif(SIMD STREQUAL "AVX2")
   target_sources(poisson PRIVATE "calc_avx2.cpp")
+  target_compile_options(poisson PRIVATE -mavx2 -mfma)
 elseif(SIMD STREQUAL "AVX512")
   target_sources(poisson PRIVATE "calc_avx512.cpp")
+  target_compile_options(poisson PRIVATE -mavx512f)
 endif()
 

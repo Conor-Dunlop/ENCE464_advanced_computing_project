@@ -12,3 +12,4 @@ _minted-*/
 /build
 /int
 /out
+.vscode/settings.json

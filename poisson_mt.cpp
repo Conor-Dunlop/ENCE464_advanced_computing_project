@@ -1,13 +1,16 @@
 #include "poisson_mt.h"
 
+// Iterate over each face of the domain and calulate the 
 static void build_boundary(double* buf, int32_t n) {
     const int32_t ln_s = (n + 2);
     const int32_t pl_s = (n + 2) * (n + 2);
     for (int32_t i = 0; i < n; i++) {
         for (int32_t j = 0; j < n; j++)
         {
+            // Dirichlet boundaries
             buf[ln_s * (i + 1) + (j + 1) + pl_s] = -1.0;
             buf[ln_s * (i + 1) + (j + 1) + pl_s * (n)] = 1.0;
+            // Neumann boundaries
             buf[pl_s * (i + 1) + ln_s * (j + 1)] = buf[pl_s * (i + 1) + ln_s * (j + 1) + 2];
             buf[pl_s * (i + 1) + ln_s * (j + 1) + (n + 1)] = buf[pl_s * (i + 1) + ln_s * (j + 1) + (n - 1)];
             buf[pl_s * (i + 1) + (j + 1)] = buf[pl_s * (i + 1) + (j + 1) + ln_s * 2];
