@@ -21,6 +21,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 
 # SIMD selection.
+
+set(SIMD AUTO CACHE STRING "SIMD Type")
+set_property(CACHE SIMD PROPERTY STRINGS SCALAR AVX2 AVX512)
+
 if(SIMD STREQUAL "SCALAR")
   target_sources(poisson PRIVATE "calc_scalar.cpp")
 elseif(SIMD STREQUAL "AVX2")
