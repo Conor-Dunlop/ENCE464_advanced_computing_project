@@ -18,16 +18,6 @@ static void build_boundary(double* buf, int32_t n) {
 
 double* poisson_mixed_multithread(const int n, double* const source, const int iterations, const int threads, const double delta)
 {
-    if (debug)
-    {
-        printf("Starting solver with:\n"
-            "n = %i\n"
-            "iterations = %i\n"
-            "threads = %i\n"
-            "delta = %f\n",
-            n, iterations, threads, delta);
-    }
-
     // Allocate some buffers to calculate the solution in
     size_t buf_size = (n + 2) * (n + 2) * (n + 2);
 
@@ -67,7 +57,7 @@ double* poisson_mixed_multithread(const int n, double* const source, const int i
 
     if (debug)
     {
-        printf("Finished solving.\n");
+        printf("Finished solving\n");
     }
 
     return curr;

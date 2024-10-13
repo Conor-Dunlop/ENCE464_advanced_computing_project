@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <immintrin.h>
 
 #include <chrono>
 #include <iostream>
@@ -73,6 +72,7 @@ int main(int argc, char** argv)
     int y = -1;
     int z = -1;
     double amplitude = 1.0;
+    int runs = 1;
 
     int opt;
 
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
 #endif // DEBUG
 
     // parse the command line arguments
-    while ((opt = getopt(argc, argv, "h:n:i:x:y:z:a:t:d:")) != -1)
+    while ((opt = getopt(argc, argv, "h:n:i:x:y:z:a:t:d:r:")) != -1)
     {
         switch (opt)
         {
@@ -111,6 +111,9 @@ int main(int argc, char** argv)
             break;
         case 'd':
             debug = true;
+            break;
+        case 'r':
+            runs = atoi(optarg);
             break;
         default:
             fprintf(stderr, "Usage: poisson [-n size] [-x source x-poisition] [-y source y-position] [-z source z-position] [-a source amplitude]  [-i iterations] [-t threads] [-d] (for debug mode)\n");
@@ -143,17 +146,35 @@ int main(int argc, char** argv)
 
     source[(z * n + y) * n + x] = amplitude;
 
-    // Calculate the resulting field with Dirichlet conditions
     double* result = nullptr;
-    std::chrono::time_point time_start = std::chrono::high_resolution_clock::now();
 
-    result = poisson_mixed_multithread(n, source, iterations, threads, delta);
+    double total_time = 0;
+    if (debug)
+    {
+        printf("Starting solver with:\n"
+            "n = %i\n"
+            "iterations = %i\n"
+            "threads = %i\n"
+            "delta = %f\n",
+            n, iterations, threads, delta);
+    }
 
-    std::chrono::time_point time_end = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < runs; i++)
+    {
+        std::chrono::time_point time_start = std::chrono::high_resolution_clock::now();
+        result = poisson_mixed_multithread(n, source, iterations, threads, delta);
+        std::chrono::time_point time_end = std::chrono::high_resolution_clock::now();
+
+        std::chrono::duration<double> time_diff = time_end - time_start;
+        total_time += time_diff.count();
+
+        if (i < (runs-1)) {
+            free(result);
+        }
+    }
 
     if (debug) {
-        std::chrono::duration<double> time_diff = time_end - time_start;
-        std::cout << "Time taken: " << time_diff.count() << "\n";
+        std::cout << "Time taken: " << total_time / (double)runs << "\n";
     }
 
     if (n <= PRINT_THRESHOLD) {
