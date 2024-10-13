@@ -12,11 +12,13 @@ endif()
 project ("poisson")
 
 # Add source to this project's executable.
-add_executable (poisson "main.cpp")
+add_executable (poisson "main.cpp" "poisson_mt.cpp")
 target_include_directories(poisson PRIVATE ./include)
 set_property(TARGET poisson PROPERTY CXX_STANDARD 20)
 
-target_sources(poisson PRIVATE "poisson_mt.cpp")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+  target_compile_options(poisson PRIVATE -O3 -march=native)
+endif()
 
 # SIMD selection.
 if(SIMD STREQUAL "SCALAR")
@@ -28,4 +30,3 @@ elseif(SIMD STREQUAL "AVX512")
   target_sources(poisson PRIVATE "calc_avx512.cpp")
   target_compile_options(poisson PRIVATE -mavx512f)
 endif()
-
