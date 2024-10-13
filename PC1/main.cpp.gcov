@@ -1,0 +1,149 @@
+        -:    0:Source:main.cpp
+        -:    0:Graph:testing-program-optimised-main.gcno
+        -:    0:Data:testing-program-optimised-main.gcda
+        -:    0:Runs:1
+        -:    1:#include <stdint.h>
+        -:    2:#include <stdbool.h>
+        -:    3:#include <stdlib.h>
+        -:    4:#include <stdio.h>
+        -:    5:#include <string.h>
+        -:    6:
+        -:    7:#ifdef _WIN32
+        -:    8:    #include "getopt.h"
+        -:    9:#else
+        -:   10:    #include <unistd.h>
+        -:   11:#endif
+        -:   12:
+        -:   13:#define PRINT_THRESHOLD 15
+        -:   14:
+        -:   15:bool debug = true;
+        -:   16:
+      100:   17:static void build_boundary(double* buf, int32_t n) {
+      100:   18:    const int32_t ln_s = (n + 2);
+      100:   19:    const int32_t pl_s = (n + 2) * (n + 2);
+      100:   20:    const int32_t top_plane_idx = pl_s * (n+1);
+    50200:   21:    for (int32_t i = 0; i < n; i++) {
+ 25150200:   22:        for (int32_t j = 0; j < n; j++)
+        -:   23:        {
+ 25100100:   24:            buf[ln_s * (i + 1) + (j + 1) + pl_s] = -1.0;
+ 25100100:   25:            buf[ln_s * (i + 1) + (j + 1) + pl_s * (n)] = 1.0;
+ 25100100:   26:            buf[pl_s * (i + 1) + ln_s * (j + 1)] = buf[pl_s * (i + 1) + ln_s * (j + 1) + 2];
+ 25100100:   27:            buf[pl_s * (i + 1) + ln_s * (j + 1) + (n + 1)] = buf[pl_s * (i + 1) + ln_s * (j + 1) + (n - 1)];
+ 25100100:   28:            buf[pl_s * (i + 1) + (j + 1)] = buf[pl_s * (i + 1) + (j + 1) + ln_s * 2];
+ 25100100:   29:            buf[pl_s * (i + 1) + (j + 1) + ln_s * (n + 1)] = buf[pl_s * (i + 1) + (j + 1) + ln_s * (n - 1)];
+        -:   30:        }
+        -:   31:    }
+      100:   32:}
+        -:   33:
+        1:   34:double* poisson_mixed_r2(const int n, double* const source, const int iterations, const double delta) {
+        1:   35:    if (debug) {
+        1:   36:        printf("Starting solver with:\n"
+        -:   37:               "n = %i\n"
+        -:   38:               "iterations = %i\n"
+        -:   39:               "delta = %f\n", n, iterations, delta);
+        -:   40:    }
+        -:   41:
+        1:   42:    size_t buf_size = (n + 2) * (n + 2) * (n + 2);
+        1:   43:    double* curr = (double*)calloc(buf_size, sizeof(double));
+        1:   44:    double* next = (double*)calloc(buf_size, sizeof(double));
+        -:   45:
+        1:   46:    if (!curr || !next) {
+    #####:   47:        fprintf(stderr, "Error: ran out of memory when trying to allocate %i sized cube\n", n);
+    #####:   48:        exit(EXIT_FAILURE);
+        -:   49:    }
+        -:   50:
+        1:   51:    const double delta_sq = delta * delta;
+        -:   52:    const double one_sixth = 1.0 / 6.0;
+        -:   53:
+      101:   54:    for (int iter = 0; iter < iterations; iter++) {
+      100:   55:        build_boundary(curr, n);
+    50200:   56:        for (int k = 1; k <= n; k++) {
+ 25150200:   57:            for (int j = 1; j <= n; j++) {
+ 25100100:   58:                double* row_b = curr + ((k * (n + 2) + j) * (n + 2));
+ 25100100:   59:                double* row_f = curr + ((k * (n + 2) + j) * (n + 2) + 2);
+ 25100100:   60:                double* src_row = source + ((k - 1) * n + (j - 1) * n);
+        -:   61:
+12600250200:   62:                for (int i = 0; i < n; i++) {
+12575150100:   63:                    double res = row_b[i] + row_f[i] + 
+12575150100:   64:                                 curr[((k + 1) * (n + 2) + j) * (n + 2) + i + 1] +
+12575150100:   65:                                 curr[((k - 1) * (n + 2) + j) * (n + 2) + i + 1] +
+12575150100:   66:                                 curr[(k * (n + 2) + j + 1) * (n + 2) + i + 1] +
+12575150100:   67:                                 curr[(k * (n + 2) + j - 1) * (n + 2) + i + 1];
+        -:   68:
+12575150100:   69:                    next[(k * (n + 2) + j) * (n + 2) + i + 1] = one_sixth * (res - (delta_sq * src_row[i]));
+        -:   70:                }
+        -:   71:            }
+        -:   72:        }
+        -:   73:
+        -:   74:        double* temp = curr;
+        -:   75:        curr = next;
+        -:   76:        next = temp;
+        -:   77:    }
+        -:   78:
+        1:   79:    free(next);
+        1:   80:    return curr;
+        -:   81:}
+        -:   82:
+    #####:   83:void print_slice(int n, double* data) {
+    #####:   84:    for (int x = 0; x < n; ++x) {
+    #####:   85:        for (int y = 0; y < n; ++y) {
+    #####:   86:            printf("%0.5f ", data[((n / 2) * (n + 2) + y + 1) * (n + 2) + (x + 1)]);
+        -:   87:        }
+    #####:   88:        printf("\n");
+        -:   89:    }
+    #####:   90:}
+        -:   91:
+        1:   92:int main(int argc, char** argv) {
+        -:   93:    int iterations = 10, n = 5;
+        -:   94:    double delta = 1;
+        -:   95:    double amplitude = 1.0;
+        -:   96:    int x = -1, y = -1, z = -1;
+        -:   97:
+        -:   98:    int opt;
+        3:   99:    while ((opt = getopt(argc, argv, "h:n:i:x:y:z:a:d:")) != -1) {
+        2:  100:        switch (opt) {
+    #####:  101:            case 'h':
+    #####:  102:                printf("Usage: poisson [-n size] [-x source x-poisition] [-y source y-position] [-z source z-position] [-a source amplitude] [-i iterations] [-d] (for debug mode)\n");
+    #####:  103:                return EXIT_SUCCESS;
+        1:  104:            case 'n': n = atoi(optarg); break;
+        1:  105:            case 'i': iterations = atoi(optarg); break;
+    #####:  106:            case 'x': x = atoi(optarg); break;
+    #####:  107:            case 'y': y = atoi(optarg); break;
+    #####:  108:            case 'z': z = atoi(optarg); break;
+    #####:  109:            case 'a': amplitude = atof(optarg); break;
+    #####:  110:            case 'd': debug = true; break;
+    #####:  111:            default: fprintf(stderr, "Usage: poisson [-n size] [-x source x-poisition] [-y source y-position] [-z source z-position] [-a source amplitude] [-i iterations] [-d] (for debug mode)\n"); exit(EXIT_FAILURE);
+        -:  112:        }
+        -:  113:    }
+        -:  114:
+        1:  115:    if (n % 2 == 0) {
+    #####:  116:        fprintf(stderr, "Error: n should be an odd number!\n");
+    #####:  117:        return EXIT_FAILURE;
+        -:  118:    }
+        -:  119:
+        1:  120:    double* source = (double*)calloc(n * n * n, sizeof(double));
+        1:  121:    if (!source) {
+    #####:  122:        fprintf(stderr, "Error: failed to allocate source term (n=%i)\n", n);
+    #####:  123:        return EXIT_FAILURE;
+        -:  124:    }
+        -:  125:
+        1:  126:    if (x < 0) x = n / 2;
+        1:  127:    if (y < 0) y = n / 2;
+        1:  128:    if (z < 0) z = n / 2;
+        -:  129:
+        1:  130:    source[(z * n + y) * n + x] = amplitude;
+        -:  131:
+        1:  132:    double* result_r2 = poisson_mixed_r2(n, source, iterations, delta);
+        -:  133:
+        1:  134:    if (debug) {
+        1:  135:        printf("Finished solving.\n");
+        -:  136:    }
+        -:  137:
+        1:  138:    if (n <= PRINT_THRESHOLD) {
+    #####:  139:        print_slice(n, result_r2);
+        -:  140:    }
+        -:  141:
+        1:  142:    free(source);
+        1:  143:    free(result_r2);
+        1:  144:    return EXIT_SUCCESS;
+        -:  145:}
