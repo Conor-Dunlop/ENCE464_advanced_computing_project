@@ -26,8 +26,43 @@ def threads():
 
     plt.show()
 
+def time_exec(name, size, runs):
+    call_path = os.path.relpath(f'./build/{name}')
+    res = os.popen(f"{call_path} -n {size} -i 100 -t 8 -r {runs}").read()
+    time = float(res.splitlines()[-1].split()[-1])
+    print(f"Completed {name} run with size {size} ")
+    return time
+
+def simd():
+    
+    sizes = np.array([101, 201, 301, 401, 501, 601, 701, 801, 901])
+    runs = np.array([10, 10, 10, 10, 8, 6, 4, 2, 1])
+
+    times_scalar = np.empty(sizes.size)
+    times_avx2 = np.empty(sizes.size)
+    times_avx512 = np.empty(sizes.size)
+
+    names = ['poisson_scalar', 'poisson_avx2', 'poisson_avx512']
+    times = {names[0]: np.empty(sizes.size), names[1]: np.empty(sizes.size), names[2]: np.empty(sizes.size)}
+
+    for name in names:
+        for i in range(sizes.size):
+            times[name][i] = time_exec(name, sizes[i], runs[i])
+
+    fig, ax = plt.subplots()
+    ax.plot(sizes, times[names[0]], label='Scalar')
+    ax.plot(sizes, times[names[1]], label='AVX2')
+    ax.plot(sizes, times[names[2]], label='AVX512')
+    ax.set_xlabel("Size (N)")
+    ax.set_ylabel("Execution time (s)")
+    ax.grid()
+    plt.ylim(bottom=0)
+
+    plt.show()
+
 def main():
-    threads()
+    #threads()
+    simd()
 
 if __name__ == "__main__":
     sys.exit(int(main() or 0))
