@@ -38,10 +38,6 @@ def simd():
     sizes = np.array([101, 201, 301, 401, 501, 601, 701, 801, 901])
     runs = np.array([10, 10, 10, 10, 8, 6, 4, 2, 1])
 
-    times_scalar = np.empty(sizes.size)
-    times_avx2 = np.empty(sizes.size)
-    times_avx512 = np.empty(sizes.size)
-
     names = ['poisson_scalar', 'poisson_avx2', 'poisson_avx512']
     times = {names[0]: np.empty(sizes.size), names[1]: np.empty(sizes.size), names[2]: np.empty(sizes.size)}
 
@@ -55,6 +51,7 @@ def simd():
     ax.plot(sizes, times[names[2]], label='AVX512')
     ax.set_xlabel("Size (N)")
     ax.set_ylabel("Execution time (s)")
+    ax.legend()
     ax.grid()
     plt.ylim(bottom=0)
 
