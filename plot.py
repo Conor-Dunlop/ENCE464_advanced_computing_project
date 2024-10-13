@@ -17,11 +17,12 @@ def threads():
         times[i] = time
         print(f"Completed run with {thread_vals[i]} threads")
 
-
     fig, ax = plt.subplots()
+    ax.plot(thread_vals, times)
     ax.set_xlabel("Number of threads")
     ax.set_ylabel("Execution time (s)")
-    ax.plot(thread_vals, times)
+    ax.grid()
+    plt.ylim(bottom=0)
 
     plt.show()
 
