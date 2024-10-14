@@ -1,0 +1,45 @@
+{
+    "buildType": {
+        "default": "Release",
+        "description": "Build Type Selection",
+        "choices": {
+            "Debug": {
+                "short": "Debug",
+                "long": "Build with no optimizations and debugging information",
+                "buildType": "Debug"
+            },
+            "Release": {
+                "short": "Release",
+                "long": "Build with optimizations and some debuging information",
+                "buildType": "Release"
+            }
+        }
+    },
+    "simd": {
+        "default": "Scalar",
+        "description": "SIMD Type",
+        "choices": {
+            "Scalar": {
+                "short": "Scalar",
+                "long": "Compute with scalar instructions",
+                "settings": {
+                    "SIMD": "SCALAR"
+                }
+            },
+            "AVX2": {
+                "short": "AVX2",
+                "long": "Compute with AVX2 instructions",
+                "settings": {
+                    "SIMD": "AVX2"
+                }
+            },
+            "AVX512": {
+                "short": "AVX512",
+                "long": "Compute with AVX512 instructions",
+                "settings": {
+                    "SIMD": "AVX512"
+                }
+            }
+        }
+    }
+}

@@ -8,3 +8,8 @@ threads
 cachegrind.out.*
 
 _minted-*/
+/.vs
+/build
+/int
+/out
+.vscode/settings.json
