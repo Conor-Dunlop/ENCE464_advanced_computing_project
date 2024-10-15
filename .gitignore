@@ -5,6 +5,7 @@ threads
 *.aux
 *.log
 *.out
+*.exe
 cachegrind.out.*
 
 _minted-*/
