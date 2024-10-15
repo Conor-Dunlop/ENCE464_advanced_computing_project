@@ -65,8 +65,8 @@ int main(int argc, char** argv)
 {
     // Default settings for solver
     int iterations = 100;
-    int n = 301;
-    int threads = 6;
+    int n = 7;
+    int threads = 4;
     float delta = 1;
     int x = -1;
     int y = -1;
