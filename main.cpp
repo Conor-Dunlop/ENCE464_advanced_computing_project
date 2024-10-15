@@ -44,7 +44,7 @@
 
  // Global flag
  // Set to true when operating in debug mode to enable verbose logging
-bool debug = true;
+bool debug = false;
 
 void print_slice(int n, double* data, int ex_size = 0) {
 
@@ -73,12 +73,7 @@ int main(int argc, char** argv)
     int z = -1;
     double amplitude = 1.0;
     int runs = 1;
-
     int opt;
-
-#ifdef _DEBUG
-    debug = true;
-#endif // DEBUG
 
     // parse the command line arguments
     while ((opt = getopt(argc, argv, "h:n:i:x:y:z:a:t:d:r:")) != -1)
@@ -144,7 +139,7 @@ int main(int argc, char** argv)
     if (z < 0 || z > n - 1)
         z = n / 2;
 
-    source[(z * n + y) * n + x] = amplitude;
+    source[(z * n + x) * n + y] = amplitude;
 
     double* result = nullptr;
 
@@ -177,9 +172,7 @@ int main(int argc, char** argv)
         std::cout << "Time taken: " << total_time / (double)runs << "\n";
     }
 
-    if (n <= PRINT_THRESHOLD) {
-        print_slice(n, result, 2);
-    }
+    print_slice(n, result, 2);
 
     free(source);
     free(result);

@@ -4,9 +4,9 @@ all: poisson
 # -Wall enables all warnings
 # -pthread configures threading
 CCX=g++
-CXXFLAGS = -std=c++20 -g -Wall -pthread -O3
+CXXFLAGS = -std=c++20 -g -Wall -pthread -O3 -mavx2 -mfma
 
-poisson: main.cpp poisson_mt.cpp calc_scalar.cpp
+poisson: main.cpp poisson_mt.cpp calc_avx2.cpp
 	$(CCX) $^ -o $@ $(CXXFLAGS)
 
 .PHONY: disassembly
